@@ -50,6 +50,7 @@
 		5ECAEEAD29B9B4EA00631F8D /* export.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ECAEEAC29B9B4EA00631F8D /* export.png */; };
 		5ECEE2DF29DCAE5E00DE46F8 /* IssueExtendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */; };
 		9B48F06E2D7EE58000EEDF4F /* RoomObjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B48F06D2D7EE58000EEDF4F /* RoomObjectInfoView.swift */; };
+		9B48F0702D7EE60500EEDF4F /* RoomObjectARLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B48F06F2D7EE60500EEDF4F /* RoomObjectARLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,7 @@
 		5ECAEEAC29B9B4EA00631F8D /* export.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = export.png; sourceTree = "<group>"; };
 		5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueExtendedView.swift; sourceTree = "<group>"; };
 		9B48F06D2D7EE58000EEDF4F /* RoomObjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomObjectInfoView.swift; sourceTree = "<group>"; };
+		9B48F06F2D7EE60500EEDF4F /* RoomObjectARLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomObjectARLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 		5E8502F128DFA3EB00FA3F01 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				9B48F06F2D7EE60500EEDF4F /* RoomObjectARLabel.swift */,
 				5E960A2A29E608BC004D66B2 /* logo.png */,
 				5ECAEEAC29B9B4EA00631F8D /* export.png */,
 				5ECAEEAA29B7FF0D00631F8D /* LaunchScreen.png */,
@@ -419,6 +422,7 @@
 				5E1656EA289B8E13002577D3 /* NotifyingEntity.swift in Sources */,
 				5E3929C42B08A5EE003A24E6 /* yolov5-Medium.mlmodel in Sources */,
 				5E16572928AC62CE002577D3 /* RoomObjectClasses.swift in Sources */,
+				9B48F0702D7EE60500EEDF4F /* RoomObjectARLabel.swift in Sources */,
 				5EC420282974BD45004F4E88 /* MiniMapLayer.swift in Sources */,
 				5EC4203829860004004F4E88 /* ObjectDetection.swift in Sources */,
 				5E1656E52890A306002577D3 /* OnboardViewController.swift in Sources */,
@@ -627,6 +631,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -663,6 +668,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

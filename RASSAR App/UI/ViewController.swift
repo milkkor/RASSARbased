@@ -64,6 +64,8 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
     var infoViewModel = RoomObjectInfoViewModel()
     var infoHostingController: UIHostingController<RoomObjectInfoView>?
     
+    private var arLabels: [UUID: RoomObjectARLabel] = [:]
+    
     public override func viewDidLoad() {
         Settings.instance.viewcontroller=self
         UIApplication.shared.isIdleTimerDisabled=true
@@ -126,7 +128,7 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
         let customAction = UIAccessibilityCustomAction(name: "Stop Scan", target: self, selector: #selector(stop))
         arView.accessibilityCustomActions = [customAction]
         
-        setupObjectInfoView()
+        // setupObjectInfoView()
     }
     @objc func stop(sender: UIButton!) {
         //Stop the scan, export result as file, and call the QL Preview
@@ -365,80 +367,107 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
         
     }
     
-    private func setupObjectInfoView() {
-        // Create the SwiftUI view
-        let infoView = RoomObjectInfoView(viewModel: infoViewModel)
-        infoHostingController = UIHostingController(rootView: infoView)
-        
-        if let infoVC = infoHostingController {
-            // Add as child view controller
-            addChild(infoVC)
-            view.addSubview(infoVC.view)
-            infoVC.didMove(toParent: self)
-            
-            // Set position and size (at the bottom of the screen)
-            infoVC.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                infoVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                infoVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                infoVC.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                infoVC.view.heightAnchor.constraint(lessThanOrEqualToConstant: 300)
-            ])
-        }
-    }
-    
-    private func updateObjectInfoView(in frame: ARFrame) {
-        // Only calculate when view is visible to save resources
-        if !infoViewModel.isVisible {
-            return
-        }
-        
-        // Get camera position
+    private func updateObjectARLabels(in frame: ARFrame) {
+        // Get camera position and transform
         let cameraTransform = frame.camera.transform
-        let cameraPosition = simd_make_float3(
-            cameraTransform.columns.3.x,
-            cameraTransform.columns.3.y,
-            cameraTransform.columns.3.z
-        )
         
         // Get floor height
         let floorHeight = replicator.getFloorHeight()
         
-        // Convert object information
-        var infos: [RoomObjectInfo] = []
+        // Track currently processed objects for cleanup
+        var currentObjectIds: Set<UUID> = []
         
         // Process RoomObjectAnchors
         for object in replicator.trackedObjectAnchors {
             let position = object.getFullPosition()
-            let distance = simd_distance(position, cameraPosition)
             
             // Calculate height from floor
             let objectHeight = position.y - floorHeight
             let floorHeightString = String(format: "%.2f m", objectHeight)
             
-            infos.append(RoomObjectInfo(
-                name: object.getCategoryName().capitalized,
-                dimensions: "\(String(format: "%.2f", object.dimensions.x))x\(String(format: "%.2f", object.dimensions.y))x\(String(format: "%.2f", object.dimensions.z))m",
-                floorHeight: floorHeightString,
-                distance: distance
-            ))
+            // Get or create label
+            let labelId = object.identifier
+            currentObjectIds.insert(labelId)
+            
+            // Calculate position for label (above the object)
+            let labelPosition = SIMD3<Float>(
+                position.x,
+                position.y + object.dimensions.y/2 + 0.1, // Position above the object
+                position.z
+            )
+            
+            if let label = arLabels[labelId] {
+                // Update existing label
+                label.update(
+                    name: object.getCategoryName().capitalized,
+                    dimensions: "\(String(format: "%.2f", object.dimensions.x))x\(String(format: "%.2f", object.dimensions.y))x\(String(format: "%.2f", object.dimensions.z))m",
+                    floorHeight: floorHeightString
+                )
+                label.updateIfNeeded()
+            } else {
+                // Create new label
+                let label = RoomObjectARLabel(
+                    name: object.getCategoryName().capitalized,
+                    dimensions: "\(String(format: "%.2f", object.dimensions.x))x\(String(format: "%.2f", object.dimensions.y))x\(String(format: "%.2f", object.dimensions.z))m",
+                    floorHeight: floorHeightString,
+                    position: labelPosition
+                )
+                
+                // Add label to ARView
+                arView.scene.addAnchor(label)
+                
+                // Store reference
+                arLabels[labelId] = label
+            }
         }
         
         // Process RoomSurfaceAnchors
         for surface in replicator.trackedSurfaceAnchors {
             let position = surface.getFullPosition()
-            let distance = simd_distance(position, cameraPosition)
+            
+            // Skip walls to avoid too many labels
+            if surface.getCategoryName().lowercased() == "wall" {
+                continue
+            }
             
             // Calculate height from floor
             let objectHeight = position.y - floorHeight
             let floorHeightString = String(format: "%.2f m", objectHeight)
             
-            infos.append(RoomObjectInfo(
-                name: surface.getCategoryName().capitalized,
-                dimensions: "\(String(format: "%.2f", surface.dimensions.x))x\(String(format: "%.2f", surface.dimensions.y))x\(String(format: "%.2f", surface.dimensions.z))m",
-                floorHeight: floorHeightString,
-                distance: distance
-            ))
+            // Get or create label
+            let labelId = surface.identifier
+            currentObjectIds.insert(labelId)
+            
+            // Calculate position for label (above the surface)
+            let labelPosition = SIMD3<Float>(
+                position.x,
+                position.y + surface.dimensions.y/2 + 0.1, // Position above the surface
+                position.z
+            )
+            
+            if let label = arLabels[labelId] {
+                // Update existing label
+                label.update(
+                    name: surface.getCategoryName().capitalized,
+                    dimensions: "\(String(format: "%.2f", surface.dimensions.x))x\(String(format: "%.2f", surface.dimensions.y))x\(String(format: "%.2f", surface.dimensions.z))m",
+                    floorHeight: floorHeightString
+                )
+                label.updateIfNeeded()
+            } else {
+                // Create new label
+                let label = RoomObjectARLabel(
+                    name: surface.getCategoryName().capitalized,
+                    dimensions: "\(String(format: "%.2f", surface.dimensions.x))x\(String(format: "%.2f", surface.dimensions.y))x\(String(format: "%.2f", surface.dimensions.z))m",
+                    floorHeight: floorHeightString,
+                    position: labelPosition
+                )
+                
+                // Add label to ARView
+                arView.scene.addAnchor(label)
+                
+                // Store reference
+                arLabels[labelId] = label
+            }
         }
         
         // Process DetectedObjects
@@ -446,31 +475,53 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
             if !object.valid { continue }
             
             let position = object.position
-            let distance = simd_distance(position, cameraPosition)
             
-            // Calculate height from floor if available
+            // Calculate height from floor
             let objectHeight = position.y - floorHeight
             let floorHeightString = String(format: "%.2f m", objectHeight)
             
-            infos.append(RoomObjectInfo(
-                name: object.getCategoryName(),
-                dimensions: "N/A", // DetectedObject currently doesn't have dimension info
-                floorHeight: floorHeightString,
-                distance: distance
-            ))
+            // Get or create label
+            let labelId = object.identifier
+            currentObjectIds.insert(labelId)
+            
+            // Position for label
+            let labelPosition = SIMD3<Float>(
+                position.x,
+                position.y + 0.1, // Position slightly above detection point
+                position.z
+            )
+            
+            if let label = arLabels[labelId] {
+                // Update existing label
+                label.update(
+                    name: object.getCategoryName(),
+                    dimensions: "Detected Object",
+                    floorHeight: floorHeightString
+                )
+                label.updateIfNeeded()
+            } else {
+                // Create new label
+                let label = RoomObjectARLabel(
+                    name: object.getCategoryName(),
+                    dimensions: "Detected Object",
+                    floorHeight: floorHeightString,
+                    position: labelPosition
+                )
+                
+                // Add label to ARView
+                arView.scene.addAnchor(label)
+                
+                // Store reference
+                arLabels[labelId] = label
+            }
         }
         
-        // Sort by distance
-        infos.sort { $0.distance < $1.distance }
-        
-        // Limit to 10 objects to avoid a too-long list
-        if infos.count > 10 {
-            infos = Array(infos.prefix(10))
-        }
-        
-        // Update ViewModel (on main thread)
-        DispatchQueue.main.async {
-            self.infoViewModel.objectInfos = infos
+        // Remove labels for objects that no longer exist
+        for (id, label) in arLabels {
+            if !currentObjectIds.contains(id) {
+                label.removeFromParent()
+                arLabels.removeValue(forKey: id)
+            }
         }
     }
 }
@@ -635,6 +686,6 @@ extension ViewController: ARSessionDelegate {
             }
         }
         
-        updateObjectInfoView(in: frame)
+        updateObjectARLabels(in: frame)
     }
 }
