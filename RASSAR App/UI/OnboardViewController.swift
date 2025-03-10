@@ -25,7 +25,7 @@ class OnboardViewController: UIViewController {
 //        //view.backgroundColor=UIColor.gray
 //        //view.layer.position=CGPoint(x: (screenSize.width-230)/2, y: 376)
 //        //view.backgroundColor = .white
-        var parent = self.view!
+        let parent = self.view!
 //        parent.layer.addSublayer(view)
 //        view.translatesAutoresizingMaskIntoConstraints = false
 //        view.widthAnchor.constraint(equalToConstant: 230).isActive = true
@@ -55,11 +55,11 @@ class OnboardViewController: UIViewController {
         self.view.addSubview(CB_Senior)
         self.view.addSubview(CB_Children)
         // Button
-        var button = UIButton(frame:CGRect(x: (screenSize.width-171)/2, y: (screenSize.height-100), width: 171, height: 55))
+        let button = UIButton(frame:CGRect(x: (screenSize.width-171)/2, y: (screenSize.height-100), width: 171, height: 55))
         //button.layer.position=CGPoint(x: (screenSize.width-230)/2, y: 788)
         
         //button.backgroundColor = .gray
-        var shadows = UIView()
+        let shadows = UIView()
         shadows.frame = CGRect(x: 0, y: 0, width: 171, height: 55)
         shadows.clipsToBounds = false
         shadows.isUserInteractionEnabled=false
@@ -75,7 +75,7 @@ class OnboardViewController: UIViewController {
         //layer0.position = CGPoint(x: 0, y: 0)
         shadows.layer.addSublayer(layer0)
 
-        var shapes = UIView()
+        let shapes = UIView()
         shapes.frame = CGRect(x: 0, y: 0, width: 171, height: 55)
         shapes.clipsToBounds = true
         button.addSubview(shapes)

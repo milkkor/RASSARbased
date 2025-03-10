@@ -37,8 +37,8 @@ public class IssueLayer:CALayer{
         //TODO: generate a layer that include short information and icon.
         //var x=pos.x*926/1440-403.333
         //var y=pos.y*926/1440
-        var x=pos.x
-        var y=pos.y
+        let x=pos.x
+        let y=pos.y
         //var x=214
         //var y=463
         //self.bounds = CGRect(x: x, y: y, width:340, height: 70)

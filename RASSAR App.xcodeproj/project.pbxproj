@@ -49,6 +49,7 @@
 		5ECAEEAB29B7FF0D00631F8D /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ECAEEAA29B7FF0D00631F8D /* LaunchScreen.png */; };
 		5ECAEEAD29B9B4EA00631F8D /* export.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ECAEEAC29B9B4EA00631F8D /* export.png */; };
 		5ECEE2DF29DCAE5E00DE46F8 /* IssueExtendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */; };
+		9B48F0662D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B48F0652D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,7 @@
 		5ECAEEAA29B7FF0D00631F8D /* LaunchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreen.png; sourceTree = "<group>"; };
 		5ECAEEAC29B9B4EA00631F8D /* export.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = export.png; sourceTree = "<group>"; };
 		5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueExtendedView.swift; sourceTree = "<group>"; };
+		9B48F0652D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RoomObjectInfoView 2.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 				5EC420272974BD45004F4E88 /* MiniMapLayer.swift */,
 				5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */,
 				5E2B2C302B166F31001A11F1 /* AudioFeedback.swift */,
+				9B48F0652D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -329,7 +332,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					5E16569E287CD8A2002577D3 = {
 						CreatedOnToolsVersion = 14.0;
@@ -425,6 +428,7 @@
 				5E1656A3287CD8A2002577D3 /* AppDelegate.swift in Sources */,
 				5EC42018294D4420004F4E88 /* PostHocViewController.swift in Sources */,
 				5E2B2C312B166F31001A11F1 /* AudioFeedback.swift in Sources */,
+				9B48F0662D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift in Sources */,
 				5E1656D3287CE6AA002577D3 /* RoomObjectReplicator.swift in Sources */,
 				5EC420462988628A004F4E88 /* NodeRender.metal in Sources */,
 				5EB3993F2B70BACA0023BB6A /* BoundingBox.swift in Sources */,
@@ -522,6 +526,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -582,6 +587,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -675,7 +681,6 @@
 		5E1656CC287CD8A4002577D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -695,7 +700,6 @@
 		5E1656CD287CD8A4002577D3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -715,7 +719,6 @@
 		5E1656CF287CD8A4002577D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F87247NHKK;
@@ -733,7 +736,6 @@
 		5E1656D0287CD8A4002577D3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F87247NHKK;

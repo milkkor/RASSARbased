@@ -56,7 +56,7 @@ class ObjectDetection{
                 return []
             }
             
-        }catch let error{
+        }catch _{
             //fatalError("failed to detect: \(error)")
             return []
         }

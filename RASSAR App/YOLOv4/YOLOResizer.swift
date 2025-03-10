@@ -92,7 +92,7 @@ class YOLOResizer{
         let sx = CGFloat(Settings.instance.yoloInputWidth) / CGFloat( croppedBufferSize.width)
         let sy = CGFloat(Settings.instance.yoloInputHeight) / CGFloat( croppedBufferSize.height)
         let scaleTransform = CGAffineTransform(scaleX: sx, y: sy)
-        var scaledImage = croppedImage.transformed(by: scaleTransform)
+        let scaledImage = croppedImage.transformed(by: scaleTransform)
         //ciContext.render(scaledImage, to: resizedPixelBuffer)
         let orientedImage=scaledImage.oriented(rotateAngle)
         let origin=orientedImage.extent.origin
@@ -124,7 +124,7 @@ class YOLOResizer{
             let scaleX=fullScreenSize.height/fullBufferSize.height/CGFloat(Settings.instance.yoloInputWidth)*CGFloat(croppedBufferSize.width)
             let scaleY=fullScreenSize.height/fullBufferSize.height/CGFloat(Settings.instance.yoloInputWidth)*CGFloat(croppedBufferSize.width)
             let leftX=(fullBufferSize.width/fullBufferSize.height*fullScreenSize.height-fullScreenSize.width)/2
-            var pred=Prediction(classIndex: names.firstIndex(of: result.label)!, score: result.confidence, rect: result.boundingBox)
+            let pred=Prediction(classIndex: names.firstIndex(of: result.label)!, score: result.confidence, rect: result.boundingBox)
             pred.rect.origin.x *= scaleX
             pred.rect.origin.y *= scaleY
             pred.rect.size.width *= scaleX

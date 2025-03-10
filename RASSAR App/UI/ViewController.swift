@@ -88,7 +88,7 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
         })
         
         //Add button for ending scanning process and export pdf report
-        let rect1 = CGRect(x: screenSize.width/4*3, y: 100, width: 56, height: 56)
+        _ = CGRect(x: screenSize.width/4*3, y: 100, width: 56, height: 56)
         // STOP BUTTON
 //        let stopButton = UIButton(frame: rect1)
 //        stopButton.accessibilityLabel="Finish Scan"
