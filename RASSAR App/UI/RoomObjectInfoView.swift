@@ -11,9 +11,9 @@ import SwiftUI
 struct RoomObjectInfo: Identifiable {
     let id = UUID()
     let name: String
-    let category: String
     let dimensions: String
-    let distance: Float
+    let floorHeight: String? // Optional floor height data
+    let distance: Float // Keep for sorting purposes
 }
 
 /// ViewModel for the room object information display
@@ -56,9 +56,12 @@ struct RoomObjectInfoView: View {
                             VStack(alignment: .leading) {
                                 Text(info.name)
                                     .font(.headline)
-                                Text("Category: \(info.category)")
                                 Text("Dimensions: \(info.dimensions)")
-                                Text("Distance: \(String(format: "%.2f", info.distance))m")
+                                
+                                // Only show floor height if available
+                                if let floorHeight = info.floorHeight {
+                                    Text("Height from floor: \(floorHeight)")
+                                }
                             }
                             .padding(.vertical, 4)
                         }

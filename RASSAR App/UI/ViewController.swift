@@ -401,6 +401,9 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
             cameraTransform.columns.3.z
         )
         
+        // Get floor height
+        let floorHeight = replicator.getFloorHeight()
+        
         // Convert object information
         var infos: [RoomObjectInfo] = []
         
@@ -409,10 +412,14 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
             let position = object.getFullPosition()
             let distance = simd_distance(position, cameraPosition)
             
+            // Calculate height from floor
+            let objectHeight = position.y - floorHeight
+            let floorHeightString = String(format: "%.2f m", objectHeight)
+            
             infos.append(RoomObjectInfo(
                 name: object.getCategoryName().capitalized,
-                category: "RoomPlan Object",
                 dimensions: "\(String(format: "%.2f", object.dimensions.x))x\(String(format: "%.2f", object.dimensions.y))x\(String(format: "%.2f", object.dimensions.z))m",
+                floorHeight: floorHeightString,
                 distance: distance
             ))
         }
@@ -422,10 +429,14 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
             let position = surface.getFullPosition()
             let distance = simd_distance(position, cameraPosition)
             
+            // Calculate height from floor
+            let objectHeight = position.y - floorHeight
+            let floorHeightString = String(format: "%.2f m", objectHeight)
+            
             infos.append(RoomObjectInfo(
                 name: surface.getCategoryName().capitalized,
-                category: "RoomPlan Surface",
                 dimensions: "\(String(format: "%.2f", surface.dimensions.x))x\(String(format: "%.2f", surface.dimensions.y))x\(String(format: "%.2f", surface.dimensions.z))m",
+                floorHeight: floorHeightString,
                 distance: distance
             ))
         }
@@ -437,10 +448,14 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
             let position = object.position
             let distance = simd_distance(position, cameraPosition)
             
+            // Calculate height from floor if available
+            let objectHeight = position.y - floorHeight
+            let floorHeightString = String(format: "%.2f m", objectHeight)
+            
             infos.append(RoomObjectInfo(
                 name: object.getCategoryName(),
-                category: "Detected Object",
                 dimensions: "N/A", // DetectedObject currently doesn't have dimension info
+                floorHeight: floorHeightString,
                 distance: distance
             ))
         }

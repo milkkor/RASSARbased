@@ -49,7 +49,7 @@
 		5ECAEEAB29B7FF0D00631F8D /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ECAEEAA29B7FF0D00631F8D /* LaunchScreen.png */; };
 		5ECAEEAD29B9B4EA00631F8D /* export.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ECAEEAC29B9B4EA00631F8D /* export.png */; };
 		5ECEE2DF29DCAE5E00DE46F8 /* IssueExtendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */; };
-		9B48F0662D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B48F0652D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift */; };
+		9B48F06E2D7EE58000EEDF4F /* RoomObjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B48F06D2D7EE58000EEDF4F /* RoomObjectInfoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,7 +115,7 @@
 		5ECAEEAA29B7FF0D00631F8D /* LaunchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreen.png; sourceTree = "<group>"; };
 		5ECAEEAC29B9B4EA00631F8D /* export.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = export.png; sourceTree = "<group>"; };
 		5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueExtendedView.swift; sourceTree = "<group>"; };
-		9B48F0652D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RoomObjectInfoView 2.swift"; sourceTree = "<group>"; };
+		9B48F06D2D7EE58000EEDF4F /* RoomObjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomObjectInfoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +215,7 @@
 				5E3FB26428ED0A2600281359 /* BLV.png */,
 				5E3FB26228ED0A1900281359 /* Children.png */,
 				5E3FB26028ECF03C00281359 /* Living Room.jpg */,
+				9B48F06D2D7EE58000EEDF4F /* RoomObjectInfoView.swift */,
 				5E1656A4287CD8A2002577D3 /* ViewController.swift */,
 				5E1656E42890A306002577D3 /* OnboardViewController.swift */,
 				5E16572A28ACBDD8002577D3 /* IssueLayer.swift */,
@@ -223,7 +224,6 @@
 				5EC420272974BD45004F4E88 /* MiniMapLayer.swift */,
 				5ECEE2DE29DCAE5E00DE46F8 /* IssueExtendedView.swift */,
 				5E2B2C302B166F31001A11F1 /* AudioFeedback.swift */,
-				9B48F0652D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -339,10 +339,12 @@
 					};
 					5E1656B3287CD8A4002577D3 = {
 						CreatedOnToolsVersion = 14.0;
+						LastSwiftMigration = 1610;
 						TestTargetID = 5E16569E287CD8A2002577D3;
 					};
 					5E1656BD287CD8A4002577D3 = {
 						CreatedOnToolsVersion = 14.0;
+						LastSwiftMigration = 1610;
 						TestTargetID = 5E16569E287CD8A2002577D3;
 					};
 				};
@@ -428,7 +430,7 @@
 				5E1656A3287CD8A2002577D3 /* AppDelegate.swift in Sources */,
 				5EC42018294D4420004F4E88 /* PostHocViewController.swift in Sources */,
 				5E2B2C312B166F31001A11F1 /* AudioFeedback.swift in Sources */,
-				9B48F0662D7EDEBA00EEDF4F /* RoomObjectInfoView 2.swift in Sources */,
+				9B48F06E2D7EE58000EEDF4F /* RoomObjectInfoView.swift in Sources */,
 				5E1656D3287CE6AA002577D3 /* RoomObjectReplicator.swift in Sources */,
 				5EC420462988628A004F4E88 /* NodeRender.metal in Sources */,
 				5EB3993F2B70BACA0023BB6A /* BoundingBox.swift in Sources */,
@@ -682,6 +684,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F87247NHKK;
@@ -691,6 +694,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = RASSARTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RetroAccess AppTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RetroAccess App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RetroAccess App";
@@ -701,6 +706,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F87247NHKK;
@@ -710,6 +716,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = RASSARTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RetroAccess AppTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RetroAccess App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RetroAccess App";
@@ -719,6 +726,7 @@
 		5E1656CF287CD8A4002577D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F87247NHKK;
@@ -727,6 +735,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = RASSARTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RetroAccess AppUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "RetroAccess App";
@@ -736,6 +746,7 @@
 		5E1656D0287CD8A4002577D3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F87247NHKK;
@@ -744,6 +755,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = RASSARTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RetroAccess AppUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "RetroAccess App";
