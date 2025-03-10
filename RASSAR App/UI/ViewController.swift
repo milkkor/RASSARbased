@@ -9,6 +9,7 @@ import UIKit
 import RealityKit
 import RoomPlan
 import PDFKit
+import SwiftUI
 //import Speech
 public class ViewController: UIViewController,RoomCaptureViewDelegate {
     
@@ -59,6 +60,9 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
     //var recognitionTask: SFSpeechRecognitionTask?
     var speechAuthorized:Bool=false
     var audioQueue = [AudioFeedback]()
+    
+    var infoViewModel = RoomObjectInfoViewModel()
+    var infoHostingController: UIHostingController<RoomObjectInfoView>?
     
     public override func viewDidLoad() {
         Settings.instance.viewcontroller=self
@@ -121,6 +125,8 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
         }
         let customAction = UIAccessibilityCustomAction(name: "Stop Scan", target: self, selector: #selector(stop))
         arView.accessibilityCustomActions = [customAction]
+        
+        setupObjectInfoView()
     }
     @objc func stop(sender: UIButton!) {
         //Stop the scan, export result as file, and call the QL Preview
@@ -359,7 +365,99 @@ public class ViewController: UIViewController,RoomCaptureViewDelegate {
         
     }
     
+    private func setupObjectInfoView() {
+        // Create the SwiftUI view
+        let infoView = RoomObjectInfoView(viewModel: infoViewModel)
+        infoHostingController = UIHostingController(rootView: infoView)
+        
+        if let infoVC = infoHostingController {
+            // Add as child view controller
+            addChild(infoVC)
+            view.addSubview(infoVC.view)
+            infoVC.didMove(toParent: self)
+            
+            // Set position and size (at the bottom of the screen)
+            infoVC.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                infoVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                infoVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                infoVC.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                infoVC.view.heightAnchor.constraint(lessThanOrEqualToConstant: 300)
+            ])
+        }
+    }
     
+    private func updateObjectInfoView(in frame: ARFrame) {
+        // Only calculate when view is visible to save resources
+        if !infoViewModel.isVisible {
+            return
+        }
+        
+        // Get camera position
+        let cameraTransform = frame.camera.transform
+        let cameraPosition = simd_make_float3(
+            cameraTransform.columns.3.x,
+            cameraTransform.columns.3.y,
+            cameraTransform.columns.3.z
+        )
+        
+        // Convert object information
+        var infos: [RoomObjectInfo] = []
+        
+        // Process RoomObjectAnchors
+        for object in replicator.trackedObjectAnchors {
+            let position = object.getFullPosition()
+            let distance = simd_distance(position, cameraPosition)
+            
+            infos.append(RoomObjectInfo(
+                name: object.getCategoryName().capitalized,
+                category: "RoomPlan Object",
+                dimensions: "\(String(format: "%.2f", object.dimensions.x))x\(String(format: "%.2f", object.dimensions.y))x\(String(format: "%.2f", object.dimensions.z))m",
+                distance: distance
+            ))
+        }
+        
+        // Process RoomSurfaceAnchors
+        for surface in replicator.trackedSurfaceAnchors {
+            let position = surface.getFullPosition()
+            let distance = simd_distance(position, cameraPosition)
+            
+            infos.append(RoomObjectInfo(
+                name: surface.getCategoryName().capitalized,
+                category: "RoomPlan Surface",
+                dimensions: "\(String(format: "%.2f", surface.dimensions.x))x\(String(format: "%.2f", surface.dimensions.y))x\(String(format: "%.2f", surface.dimensions.z))m",
+                distance: distance
+            ))
+        }
+        
+        // Process DetectedObjects
+        for object in replicator.trackedObjects {
+            if !object.valid { continue }
+            
+            let position = object.position
+            let distance = simd_distance(position, cameraPosition)
+            
+            infos.append(RoomObjectInfo(
+                name: object.getCategoryName(),
+                category: "Detected Object",
+                dimensions: "N/A", // DetectedObject currently doesn't have dimension info
+                distance: distance
+            ))
+        }
+        
+        // Sort by distance
+        infos.sort { $0.distance < $1.distance }
+        
+        // Limit to 10 objects to avoid a too-long list
+        if infos.count > 10 {
+            infos = Array(infos.prefix(10))
+        }
+        
+        // Update ViewModel (on main thread)
+        DispatchQueue.main.async {
+            self.infoViewModel.objectInfos = infos
+        }
+    }
 }
 
 extension ViewController: RoomCaptureSessionDelegate {
@@ -521,5 +619,7 @@ extension ViewController: ARSessionDelegate {
                 }
             }
         }
+        
+        updateObjectInfoView(in: frame)
     }
 }
